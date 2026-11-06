@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'self'; object-src 'none'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' https://ixcxqqncddztdffsfewo.supabase.co wss://ixcxqqncddztdffsfewo.supabase.co; form-action 'self'; font-src 'self' data:; upgrade-insecure-requests">
+  <meta name="referrer" content="no-referrer">
+  <meta name="theme-color" content="#112943">
+  <meta name="description" content="Daymark — an elegant personal weekly planner and calendar.">
+  <title>Daymark — Personal Planner</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="bootScreen" class="boot-screen" role="status">Opening your Daymark…</div>
+<div class="app" id="plannerApp" hidden>
+  <header class="topbar">
+    <div class="brand" aria-label="Daymark planner">
+      <div class="brand-mark" aria-hidden="true">D<span style="color:#adc0d2">.</span></div>
+      <div><div class="brand-name">DAYMARK</div><div class="brand-subtitle">PERSONAL PLANNER</div></div>
+    </div>
+    <div class="header-actions">
+      <button type="button" class="header-button mobile-sidebar-toggle" id="sidebarToggle">Overview</button>
+      <button type="button" class="header-button" id="searchOpen" title="Search tasks (press /)">⌕ &nbsp; Search</button>
+      <div class="view-switch" role="group" aria-label="Calendar view">
+        <button type="button" class="header-button" id="weekButton" aria-pressed="true">Week</button>
+        <button type="button" class="header-button" id="monthButton" aria-pressed="false">Month</button>
+      </div>
+      <div class="tools-root" id="toolsRoot">
+        <button type="button" class="header-button" id="toolsButton" aria-haspopup="true" aria-expanded="false">Tools ▾</button>
+        <div class="tools-menu" id="toolsMenu" hidden>
+          <button type="button" id="importButton">Import reminders / calendar…</button>
+          <button type="button" id="exportIcsButton">Export calendar (.ics)</button>
+          <div class="menu-divider"></div>
+          <button type="button" id="exportBackupButton">Download backup (.json)</button>
+          <button type="button" id="restoreBackupButton">Restore backup (.json)…</button>
+        </div>
+      </div>
+      <button type="button" class="header-button" id="collabOpen">Shared spaces</button>
+      <button type="button" class="header-button" id="integrationsOpen">Integrations</button>
+      <button type="button" class="header-button" id="weeklyHoursOpen">Weekly hours</button>
+      <button type="button" class="header-button" id="settingsOpen">Settings</button>
+      <span id="accountEmail" class="account-identity"></span>
+      <button type="button" class="header-button" id="logOutButton">Log out</button>
+      <button type="button" class="header-button primary" id="newTaskTop">+ New task</button>
+    </div>
+  </header>
+
+  <div class="shell">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-kicker">Calendar overview</div>
+      <section class="mini-cal" aria-label="Mini calendar">
+        <div class="mini-nav">
+          <span class="mini-title" id="miniTitle"></span>
+          <div class="mini-arrows">
+            <button type="button" class="icon-button" id="miniPrev" aria-label="Previous month">‹</button>
+            <button type="button" class="icon-button" id="miniNext" aria-label="Next month">›</button>
+          </div>
+        </div>
+        <div class="mini-grid" id="miniGrid"></div>
+      </section>
+
+      <section class="side-section">
+        <div class="side-heading">Your progress <small id="progressRange">This week</small></div>
+        <div class="stat-card">
+          <div class="stat-main"><span class="stat-number" id="progressPercent">0%</span><span class="stat-label">completed</span></div>
+          <div class="progress-track" aria-label="Weekly task completion"><div class="progress-fill" id="progressFill"></div></div>
+        </div>
+        <p class="side-note" id="progressNote">Add your first task to begin planning.</p>
+      </section>
+
+      <section class="side-section">
+        <div class="side-heading">Upcoming reminders</div>
+        <div class="reminder-list" id="upcomingReminders"></div>
+      </section>
+      <div class="sidebar-footer">Your tasks are private to your account and saved in the cloud. Use <strong>Tools → Download backup</strong> for an extra copy.</div>
+    </aside>
+
+    <main class="main">
+      <div class="main-heading">
+        <div>
+          <div class="eyebrow" id="pageEyebrow">YOUR WEEK AT A GLANCE</div>
+          <h1 class="page-title" id="pageTitle">Weekly planner</h1>
+          <div class="page-caption" id="pageCaption">Make room for what matters.</div>
+        </div>
+        <div class="heading-controls">
+          <button type="button" class="today-button" id="todayButton">Today</button>
+          <div class="nav-pair">
+            <button type="button" class="icon-button" id="prevButton" aria-label="Previous period">‹</button>
+            <button type="button" class="icon-button" id="nextButton" aria-label="Next period">›</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="dashboard" id="dashboard" aria-label="Planning summary"></div>
+      <div id="compassPanel" class="compass-panel" aria-label="Daymark intelligent planning"></div>
+      <section class="calendar-panel" aria-label="Planner calendar">
+        <div class="calendar-panel-top">
+          <span class="panel-label" id="panelTitle">Weekly schedule</span>
+          <span class="panel-description" id="panelDescription">Select a time to add a task · Select a task to edit</span>
+        </div>
+        <div class="calendar-legend" aria-label="Calendar color key">
+          <span class="legend-item"><span class="legend-swatch cat-task" aria-hidden="true"></span>Tasks</span>
+          <span class="legend-item"><span class="legend-swatch cat-reminder" aria-hidden="true"></span>Reminders</span>
+          <span class="legend-item"><span class="legend-swatch cat-weekly" aria-hidden="true"></span>Recurring activities</span>
+        </div>
+        <div id="calendarContent"></div>
+      </section>
+      <p class="footnote">Tip: Press <strong>N</strong> to create a task, <strong>/</strong> to search, or select an empty time in the week grid. Your schedule and regular school/work hours are saved to your personal account.</p>
+    </main>
+  </div>
+</div>
+
+<dialog id="taskDialog" aria-labelledby="taskDialogTitle">
+  <form id="taskForm">
+    <div class="modal-head">
+      <div><div class="eyebrow">PLAN YOUR TIME</div><h2 id="taskDialogTitle">New task</h2></div>
+      <button type="button" class="modal-close" data-close="taskDialog" aria-label="Close">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <label class="form-field form-full"><span>Task or reminder title *</span><input id="taskTitle" maxlength="160" required placeholder="What needs to get done?" autocomplete="off"></label>
+        <label class="form-field"><span>Kind</span><select id="taskKind"><option value="task">Task</option><option value="reminder">Important reminder</option><option value="weekly">Weekly recurring activity</option></select></label>
+        <label class="form-field"><span>Priority</span><select id="taskPriority"><option value="normal">Normal</option><option value="high">High priority</option></select></label>
+        <label class="form-field"><span>Date *</span><input id="taskDate" type="date" required></label>
+        <label class="form-field"><span>Category</span><select id="taskCategory"><option value="work">Work</option><option value="study">Study</option><option value="personal">Personal</option><option value="health">Health</option></select></label>
+        <div class="form-full checkbox-line"><input type="checkbox" id="taskAllDay"><label for="taskAllDay">All-day item (no specific time)</label></div>
+        <label class="form-field time-dependent"><span>Start time</span><input id="taskStart" type="time" required></label>
+        <label class="form-field time-dependent"><span>End time</span><input id="taskEnd" type="time" required></label>
+        <div class="form-full recurrence-box" id="taskRepeatOptions" hidden>
+          <div class="modal-subhead">REPEAT ON SELECTED WEEKS <span>Same weekday and times</span></div>
+          <p class="helper">Choose the weeks for this activity. Each selected week becomes its own calendar occurrence, so you can complete dates separately.</p>
+          <label class="form-field"><span>Weeks to display</span><select id="taskRepeatHorizon"><option value="8">Next 8 weeks</option><option value="16" selected>Next 16 weeks</option><option value="26">Next 26 weeks</option><option value="52">Next 52 weeks</option></select></label>
+          <div class="repeat-controls"><button type="button" class="text-button border-button" id="repeatSelectAll">Select every shown week</button><button type="button" class="text-button border-button" id="repeatClear">Clear selection</button></div>
+          <div id="taskRepeatWeeks" class="repeat-weeks" role="group" aria-label="Select recurring weeks"></div>
+          <label class="checkbox-line" id="taskSeriesEditRow" hidden><input id="taskEditSeries" type="checkbox" checked> Apply these changes to the selected weeks in this series</label>
+          <p class="helper" id="repeatDurationLabel" aria-live="polite"></p>
+        </div>
+        <label class="form-field form-full"><span>Location (optional)</span><input id="taskLocation" maxlength="200" placeholder="Robotics lab, Room 204, or video call"></label>
+        <label class="form-field form-full"><span>Notify me</span><select id="taskReminder"><option value="none">No notification</option><option value="0">At start time</option><option value="5">5 minutes before</option><option value="15">15 minutes before</option><option value="30">30 minutes before</option><option value="60">1 hour before</option><option value="1440">1 day before</option></select><p class="helper">Browser alerts work while this page is open and notifications are enabled in Settings. All-day alerts use 9:00 AM.</p></label>
+        <p class="form-full helper task-duration-note" id="taskDurationNote">Duration is calculated automatically from the start and end time.</p>
+        <label class="form-field"><span>Actual time spent (minutes)</span><input id="taskActual" type="number" min="1" max="1440" placeholder="Optional, after completion"></label>
+        <label class="form-full checkbox-line"><input type="checkbox" id="taskFixed"><span>Fixed commitment (never move in Catch-Up Mode)</span></label>
+        <label class="form-field form-full"><span>Related document link (optional)</span><input id="taskResource" type="url" maxlength="1200" placeholder="https://docs.google.com/... or https://onedrive.live.com/..."><span class="helper">HTTPS links only. This saves a link, not access to your Google or Microsoft account.</span><button id="taskResourceOpen" type="button" class="text-button border-button" hidden>Open linked document ↗</button></label>
+        <label class="form-field form-full"><span>Notes</span><textarea id="taskNotes" maxlength="4000" placeholder="Details, links, or anything important…"></textarea></label>
+        <div class="form-full checkbox-line"><input type="checkbox" id="taskCompleted"><label for="taskCompleted">Mark as complete</label></div>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button type="button" class="delete-button push-left" id="deleteTask" hidden>Delete task</button>
+      <button type="button" class="delete-button" id="deleteSeries" hidden>Delete series</button>
+      <button type="button" class="text-button" data-close="taskDialog">Cancel</button>
+      <button type="submit" class="action-button" id="saveTask">Save task</button>
+    </div>
+  </form>
+</dialog>
+
+<dialog id="settingsDialog" aria-labelledby="settingsTitle">
+  <div class="modal-head"><div><div class="eyebrow">PERSONALIZE DAYMARK</div><h2 id="settingsTitle">Settings</h2></div><button type="button" class="modal-close" data-close="settingsDialog" aria-label="Close">×</button></div>
+  <div class="modal-body">
+    <div class="settings-section">
+      <h3>Calendar preferences</h3>
+      <div class="form-grid">
+        <label class="form-field"><span>Week begins on</span><select id="settingWeekStart"><option value="1">Monday</option><option value="0">Sunday</option></select></label>
+        <label class="form-field"><span>Time display</span><select id="settingTimeFormat"><option value="12">12-hour (3:00 PM)</option><option value="24">24-hour (15:00)</option></select></label>
+        <label class="form-field form-full"><span>Default task duration</span><select id="settingDuration"><option value="30">30 minutes</option><option value="60">1 hour</option><option value="90">1.5 hours</option><option value="120">2 hours</option></select></label>
+      </div>
+    </div>
+    <div class="settings-section">
+      <h3>Reality Check planning hours</h3>
+      <p class="helper">Set the hours during which you want to plan personal work. Your weekly school/work schedule is subtracted automatically.</p>
+      <button type="button" class="text-button border-button" id="settingsWeeklyHours" style="margin-bottom:12px">Manage weekly school/work hours ↗</button>
+      <div class="form-grid">
+        <label class="form-field"><span>Start of available day</span><input id="settingWorkStart" type="time" value="08:00"></label>
+        <label class="form-field"><span>End of available day</span><input id="settingWorkEnd" type="time" value="21:00"></label>
+        <label class="form-field form-full"><span>Daily buffer</span><select id="settingBuffer"><option value="0">No buffer</option><option value="30">30 minutes</option><option value="45">45 minutes</option><option value="60">1 hour</option><option value="90">1.5 hours</option><option value="120">2 hours</option></select></label>
+      </div>
+      <p class="helper">Available work time = your planning window minus fixed appointments, important reminders, and your daily buffer. Flexible tasks count toward planned work.</p>
+    </div>
+    <div class="settings-section">
+      <h3>Notifications</h3>
+      <label class="checkbox-line"><input id="settingNotifications" type="checkbox"> Enable desktop reminders</label>
+      <p class="helper">This requires browser permission and GitHub Pages (HTTPS). Alerts only run while this website is open; they are not guaranteed when the browser is closed.</p>
+    </div>
+    <div>
+      <h3 style="font-size:16px;margin:0 0 10px;color:var(--navy)">Your data</h3>
+      <p class="helper">Tasks and reminders are stored securely in your personal Daymark account. Calendar display settings are stored per account in this browser. Download a backup for extra peace of mind.</p>
+      <button type="button" class="text-button" id="migrateLocalButton" style="margin-top:14px;display:block">Import tasks from the original browser-only Daymark…</button>
+      <button type="button" class="delete-button" id="clearDataButton" style="margin-top:14px">Delete all my tasks and reminders…</button>
+    </div>
+  </div>
+  <div class="modal-actions"><button type="button" class="action-button" data-close="settingsDialog">Done</button></div>
+</dialog>
+
+<dialog id="weeklyHoursDialog" class="wide-dialog" aria-labelledby="weeklyHoursTitle">
+  <div class="modal-head"><div><div class="eyebrow">YOUR REGULAR WEEK</div><h2 id="weeklyHoursTitle">School &amp; work hours</h2></div><button type="button" class="modal-close" data-close="weeklyHoursDialog" aria-label="Close">×</button></div>
+  <div class="modal-body weekly-hours-body">
+    <p class="helper">Set your regular schedule once, not on every date. Daymark shades these hours in the week view and removes them from usable planning time. You can add separate blocks for school, work, or other weekly commitments.</p>
+    <form id="weeklyHoursForm" class="weekly-hours-form">
+      <input type="hidden" id="weeklyHoursEditingId">
+      <div class="form-grid">
+        <label class="form-field form-full"><span>School or work label</span><input id="weeklyHoursName" required maxlength="80" value="School" placeholder="School, work, internship…"></label>
+        <label class="form-field"><span>Starts</span><input id="weeklyHoursStart" type="time" required value="08:00"></label>
+        <label class="form-field"><span>Ends</span><input id="weeklyHoursEnd" type="time" required value="15:00"></label>
+        <div class="form-full"><span class="form-section-label">Repeats on</span><div class="repeat-controls"><button type="button" class="text-button border-button" id="weeklyPresetWeekdays">Mon–Fri</button><button type="button" class="text-button border-button" id="weeklyPresetEveryday">Every day</button><button type="button" class="text-button border-button" id="weeklyPresetClear">Clear</button></div><div class="weekly-day-picks" id="weeklyDayPicks">
+          <label><input type="checkbox" value="1" checked> Mon</label><label><input type="checkbox" value="2" checked> Tue</label><label><input type="checkbox" value="3" checked> Wed</label><label><input type="checkbox" value="4" checked> Thu</label><label><input type="checkbox" value="5" checked> Fri</label><label><input type="checkbox" value="6"> Sat</label><label><input type="checkbox" value="0"> Sun</label>
+        </div></div>
+      </div>
+      <div class="weekly-form-actions"><button type="submit" class="action-button" id="weeklyHoursSave">Save weekly block</button><button type="button" class="text-button border-button" id="weeklyHoursReset">New block</button></div>
+    </form>
+    <div class="modal-subhead">YOUR REGULAR COMMITMENTS <span>Manage below</span></div>
+    <div id="weeklyHoursList" class="weekly-hours-list"></div>
+    <div class="modal-subhead">WEEKLY HOURS SUMMARY <span>Does not double-count overlaps</span></div>
+    <div id="weeklyHoursTotals" class="weekly-hours-totals"></div>
+    <p class="helper">Your tasks and recurring events remain separate from these weekly school/work blocks. Usable Time = planning window − school/work hours − fixed calendar events − daily buffer.</p>
+  </div>
+  <div class="modal-actions"><button type="button" class="action-button" data-close="weeklyHoursDialog">Done</button></div>
+</dialog>
+
+<dialog id="searchDialog" aria-labelledby="searchTitle">
+  <div class="modal-head"><div><div class="eyebrow">FIND WHAT MATTERS</div><h2 id="searchTitle">Search your planner</h2></div><button type="button" class="modal-close" data-close="searchDialog" aria-label="Close">×</button></div>
+  <div class="modal-body"><label class="form-field"><span>Search tasks, reminders and notes</span><input id="searchInput" class="search-box" placeholder="Start typing…" autocomplete="off"></label><div class="search-results" id="searchResults"></div></div>
+</dialog>
+
+
+<dialog id="focusDialog" aria-labelledby="focusTitle">
+  <form id="focusForm">
+    <div class="modal-head"><div><div class="eyebrow">DAYMARK COMPASS</div><h2 id="focusTitle">Choose your direction</h2></div><button type="button" class="modal-close" data-close="focusDialog" aria-label="Close">×</button></div>
+    <div class="modal-body"><p id="focusDay" class="helper"></p><label class="form-field"><span>Your one main objective</span><input id="focusObjective" maxlength="180" placeholder="What must move forward today?"></label><div class="modal-subhead">THREE PRIORITIES <span>SELECT UP TO THREE</span></div><div id="focusChoices" class="choice-list"></div></div>
+    <div class="modal-actions"><button type="button" class="text-button" data-close="focusDialog">Cancel</button><button class="action-button" id="saveFocus" type="submit">Save direction</button></div>
+  </form>
+</dialog>
+<dialog id="runwayDialog" aria-labelledby="runwayTitle">
+  <form id="runwayForm">
+    <div class="modal-head"><div><div class="eyebrow">PLAN BACKWARD FROM A DEADLINE</div><h2 id="runwayTitle">Deadline runway</h2></div><button type="button" class="modal-close" data-close="runwayDialog" aria-label="Close">×</button></div>
+    <div class="modal-body"><p class="helper">Enter a project and Daymark will propose non-overlapping work sessions before its deadline. Nothing is saved until you approve the preview.</p><div class="form-grid">
+      <label class="form-field form-full"><span>Project or exam name</span><input id="runwayProject" maxlength="120" required placeholder="e.g. Biology unit exam"></label>
+      <label class="form-field"><span>Start planning</span><input id="runwayStart" type="date" required></label>
+      <label class="form-field"><span>Deadline</span><input id="runwayDeadline" type="date" required></label>
+      <label class="form-field"><span>Number of sessions</span><input id="runwaySessions" type="number" min="1" max="24" value="5" required></label>
+      <label class="form-field"><span>Minutes per session</span><select id="runwayDuration"><option value="30">30 minutes</option><option value="45">45 minutes</option><option value="60" selected>1 hour</option><option value="90">1.5 hours</option><option value="120">2 hours</option></select></label>
+      <label class="form-field"><span>Preferred start time</span><input id="runwayPreferred" type="time" value="16:00" required></label>
+      <label class="form-field"><span>Category</span><select id="runwayCategory"><option value="study">Study</option><option value="work">Work</option><option value="personal">Personal</option><option value="health">Health</option></select></label>
+    </div><button type="submit" class="text-button border-button">Preview available sessions</button><div class="preview-list" id="runwayPreview" aria-live="polite"></div></div>
+  </form>
+  <div class="modal-actions"><button class="text-button" type="button" data-close="runwayDialog">Cancel</button><button class="action-button" type="button" id="runwaySave" disabled>Add sessions to calendar</button></div>
+</dialog>
+<dialog id="catchupDialog" aria-labelledby="catchupTitle">
+  <div class="modal-head"><div><div class="eyebrow">REPLAN WITHOUT STARTING OVER</div><h2 id="catchupTitle">Rebuild your week</h2></div><button type="button" class="modal-close" data-close="catchupDialog" aria-label="Close">×</button></div>
+  <div class="modal-body"><div class="preview-list" id="catchupBody"></div></div>
+  <div class="modal-actions"><button type="button" class="text-button" data-close="catchupDialog">Cancel</button><button type="button" class="action-button" id="catchupSave">Approve and reschedule</button></div>
+</dialog>
+<dialog id="reviewDialog" aria-labelledby="reviewTitle">
+  <form id="reviewForm">
+    <div class="modal-head"><div><div class="eyebrow">LOOK BACK TO PLAN BETTER</div><h2 id="reviewTitle">Weekly reflection</h2></div><button type="button" class="modal-close" data-close="reviewDialog" aria-label="Close">×</button></div>
+    <div class="modal-body"><p id="reviewPeriod" class="helper"></p><div id="reviewMetrics"></div><label class="form-field"><span>What worked? What will you change next week?</span><textarea id="reviewNotes" maxlength="1200" rows="5" placeholder="A few sentences are enough…"></textarea></label></div>
+    <div class="modal-actions"><button type="button" class="text-button" data-close="reviewDialog">Cancel</button><button id="saveReview" class="action-button" type="submit">Save reflection</button></div>
+  </form>
+</dialog>
+<dialog id="chatDialog" aria-labelledby="chatTitle">
+  <div class="modal-head"><div><div class="eyebrow">DAYMARK ↗ CHATGPT</div><h2 id="chatTitle">Discuss your schedule</h2></div><button type="button" class="modal-close" data-close="chatDialog" aria-label="Close">×</button></div>
+  <div class="modal-body"><p class="helper">You control exactly what you share. This copies an editable summary for you to paste into ChatGPT; it does not connect accounts or sync in the background.</p>
+    <div class="form-grid"><label class="form-field"><span>Include</span><select id="chatScope"><option value="week">Next 7 days</option><option value="today">Selected day</option></select></label><label class="checkbox-line"><input type="checkbox" id="chatNotes"><span>Include task notes (may contain private information)</span></label></div>
+    <label class="form-field"><span>Review or edit before sharing</span><textarea id="chatBrief" class="share-text" rows="14" spellcheck="false"></textarea></label></div>
+  <div class="modal-actions share-actions"><button class="text-button" type="button" id="downloadChatBrief">Download .txt</button><button class="text-button" type="button" id="openChatGPTSite">Open ChatGPT ↗</button><button class="action-button" type="button" id="copyChatBrief">Copy summary</button></div>
+</dialog>
+
+
+<dialog id="integrationsDialog" class="wide-dialog" aria-labelledby="integrationsTitle">
+  <div class="modal-head"><div><div class="eyebrow">CONNECTED WORKFLOWS</div><h2 id="integrationsTitle">Integrations</h2></div><button class="modal-close" type="button" data-close="integrationsDialog" aria-label="Close">×</button></div>
+  <div class="modal-body integration-content">
+    <p class="helper">Daymark keeps your tasks private. These are user-initiated handoffs, imports and document links—not automatic access to your Gmail, Outlook or Drive accounts.</p>
+    <div class="integration-note"><strong>Connected:</strong> Daymark ↔ Supabase account storage. <strong>Not connected:</strong> Google or Microsoft OAuth. You choose what to export or share.</div>
+    <div class="integration-section"><div class="modal-subhead">CALENDARS <span>Choose one of your personal tasks</span></div>
+      <label class="form-field"><span>Task to add to an external calendar</span><select id="integrationTask"></select></label>
+      <div class="integration-actions"><button class="action-button" id="integrationGoogleCal" type="button">Add to Google Calendar ↗</button><button class="text-button border-button" id="integrationOutlookCal" type="button">Add to Outlook Calendar ↗</button><button class="text-button border-button" id="integrationIcs" type="button">Download .ics</button></div>
+      <p class="helper">Daymark opens a prefilled calendar event or downloads a file. Edits made there do not automatically sync back.</p>
+    </div>
+    <div class="integration-section"><div class="modal-subhead">MAIL <span>Share a summary only when you choose</span></div>
+      <div class="integration-actions"><button class="text-button border-button" type="button" id="integrationGmail">Draft in Gmail ↗</button><button class="text-button border-button" type="button" id="integrationOutlookMail">Draft in Outlook ↗</button><button class="text-button border-button" type="button" id="integrationMailto">Use default mail app ↗</button></div>
+      <p class="helper">Only task titles, dates and times from the next seven days are placed in the draft—no private task notes. Review recipients and contents before sending.</p>
+    </div>
+    <div class="integration-section"><div class="modal-subhead">DOCUMENTS & FILES <span>Attach links in any task editor</span></div>
+      <div class="integration-actions"><button class="text-button border-button" type="button" data-service-url="https://docs.google.com/document/">Google Docs ↗</button><button class="text-button border-button" type="button" data-service-url="https://docs.google.com/spreadsheets/">Google Sheets ↗</button><button class="text-button border-button" type="button" data-service-url="https://drive.google.com/drive/my-drive">Google Drive ↗</button><button class="text-button border-button" type="button" data-service-url="https://onedrive.live.com/">OneDrive ↗</button></div>
+      <p class="helper">Paste any HTTPS Docs, Sheets or OneDrive URL into a Daymark task's “Related document link” field. Link permissions still depend on the external service.</p>
+    </div>
+    <div class="integration-section"><div class="modal-subhead">OTHER TOOLS <span>Export and bring your own services</span></div>
+      <div class="integration-actions"><button class="text-button border-button" type="button" id="integrationFullIcs">Export full Daymark calendar (.ics)</button><button class="text-button border-button" type="button" id="integrationImport">Import .ics / .csv</button><button class="text-button border-button" type="button" id="integrationChat">ChatGPT planning brief</button></div>
+      <p class="helper">ChatGPT summaries are reviewed and copied manually; there is no automatic ChatGPT account connection.</p>
+    </div>
+  </div>
+  <div class="modal-actions"><button class="action-button" type="button" data-close="integrationsDialog">Done</button></div>
+</dialog>
+
+<dialog id="collaborationDialog" class="wide-dialog" aria-labelledby="collabTitle">
+  <div class="modal-head"><div><div class="eyebrow">WORK TOGETHER, KEEP PERSONAL TASKS PRIVATE</div><h2 id="collabTitle">Shared spaces</h2></div><button class="modal-close" type="button" data-close="collaborationDialog" aria-label="Close">×</button></div>
+  <div class="modal-body collab-content">
+    <p class="helper">Shared spaces are separate from your private calendar. Only invited account IDs can see a space's shared tasks. Never post your login credentials.</p>
+    <div class="integration-note"><strong>Your Daymark account ID</strong><div class="collab-identity"><code id="collabMyId"></code><button type="button" class="text-button border-button" id="collabCopyId">Copy ID</button></div><span class="helper">To collaborate, each person signs up for Daymark and sends the space owner their account ID. An ID is not a password.</span></div>
+    <div id="collabStatus" class="collab-status" role="status" aria-live="polite"></div>
+    <form id="collabCreateForm" class="inline-form"><label class="form-field"><span>Create a private shared space</span><input id="collabNewName" required minlength="2" maxlength="70" placeholder="Science Olympiad team"></label><button class="action-button" type="submit">Create space</button></form>
+    <div class="integration-section"><label class="form-field"><span>Choose shared space</span><select id="collabSpaceSelect"><option value="">Select a space</option></select></label><button class="text-button border-button" type="button" id="collabRefresh">Refresh spaces and tasks</button><div id="collabWorkspace" hidden>
+      <div class="collab-space-top"><div id="collabSpaceSummary"></div><button type="button" class="delete-button" id="collabDeleteSpace" hidden>Delete this space</button></div>
+      <form id="collabAddMemberForm" class="inline-form" hidden><label class="form-field"><span>Add an existing Daymark user by account ID</span><input id="collabMemberId" placeholder="xxxxxxxx-xxxx-4xxx-xxxx-xxxxxxxxxxxx" maxlength="36" required></label><button class="text-button border-button" type="submit">Add member</button></form>
+      <div class="collab-members" id="collabMembers"></div>
+      <div class="modal-subhead">SHARED TASKS <span>Visible only to members of this space</span></div>
+      <form id="collabTaskForm" class="shared-task-form"><input id="collabTaskTitle" placeholder="Add a shared task…" maxlength="160" required><input type="date" id="collabTaskDate" required><button class="action-button" type="submit">Add task</button></form>
+      <div class="collab-tasks" id="collabTasks"></div>
+    </div></div>
+  </div>
+  <div class="modal-actions"><button class="text-button" type="button" data-close="collaborationDialog">Close</button></div>
+</dialog>
+
+<input id="importInput" type="file" accept=".ics,.csv,.json,text/calendar,text/csv,application/json" hidden>
+<input id="restoreInput" type="file" accept=".json,application/json" hidden>
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+<script src="supabase-config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0"></script>
+<script src="supabase-client.js"></script>
+<script src="app.js"></script>
+<script src="connect.js"></script>
+</body>
+</html>
