@@ -44,7 +44,7 @@
         <div class="sidebar-kicker quick-label">Your workspace</div>
         <button type="button" class="quick-action quick-subtle" id="collabOpen">Shared spaces <span aria-hidden="true">↗</span></button>
         <button type="button" class="quick-action quick-subtle" id="integrationsOpen">Integrations <span aria-hidden="true">↗</span></button>
-        <a class="quick-action quick-subtle cannon-sidebar-link" href="cannon.html"><span>Cannon US Planner</span><span aria-hidden="true">↗</span></a>
+        <a class="quick-action quick-subtle cannon-sidebar-link" id="cannonUsNav" href="cannon.html" hidden><span>Cannon US Planner</span><span aria-hidden="true">↗</span></a>
         <a class="quick-action quick-subtle" href="admin.html" id="adminNav" hidden>Admin dashboard <span aria-hidden="true">↗</span></a>
       </section>
       <div class="sidebar-kicker mini-kicker">Calendar overview</div>
@@ -177,6 +177,17 @@
         <label class="form-field"><span>Time display</span><select id="settingTimeFormat"><option value="12">12-hour (3:00 PM)</option><option value="24">24-hour (15:00)</option></select></label>
         <label class="form-field form-full"><span>Default task duration</span><select id="settingDuration"><option value="30">30 minutes</option><option value="60">1 hour</option><option value="90">1.5 hours</option><option value="120">2 hours</option></select></label>
       </div>
+    </div>
+    <div class="settings-section">
+      <h3>School affiliation</h3>
+      <p class="helper">Choose your school to personalize your workspace. Existing Solenary accounts can set this here too.</p>
+      <label class="checkbox-line" for="settingCannonStudent"><input id="settingCannonStudent" type="checkbox"> I am a Cannon School student</label>
+      <div id="settingCannonDivisionGroup" class="school-settings-division" hidden>
+        <label class="form-field" for="settingCannonDivision"><span>School division</span><select id="settingCannonDivision"><option value="">Select your division</option><option value="middle">Middle School</option><option value="upper">Upper School</option></select></label>
+        <p class="helper">Cannon US Planner is available for Upper School accounts. Middle School planning may be added later.</p>
+      </div>
+      <button id="saveSchoolAffiliation" type="button" class="text-button border-button">Save school selection</button>
+      <p class="helper" id="schoolSettingStatus" role="status" aria-live="polite">School selection is self-reported; it does not verify school enrollment.</p>
     </div>
     <div class="settings-section">
       <h3>Reality Check planning hours</h3>

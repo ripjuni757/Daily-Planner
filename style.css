@@ -462,3 +462,18 @@
 
 .auth-brand-mini-tagline { display:none; }
 @media(max-width:800px){.auth-brand-mini-tagline{display:block;margin:5px 0 0 58px;color:#d1b88b;font-size:11px;letter-spacing:.05em;}}
+
+/* Cannon account personalization — no change to the original Solenary layout. */
+.auth-school-select { margin: -3px 0 22px; border: 1px solid #d4dee6; background: #f7f9fb; padding: 16px; }
+.auth-school-select[hidden],.auth-school-divisions[hidden],.school-settings-division[hidden] { display:none!important; }
+.auth-school-check { display:flex; align-items:flex-start; gap:12px; cursor:pointer; color:#172f48; font:13px Arial,sans-serif; }
+.auth-school-check input { width:17px; height:17px; flex:0 0 auto; margin:0; accent-color:#183a5e; }
+.auth-school-check strong { display:block; font-size:13px; }
+.auth-school-check small { display:block; font-size:11px; color:#61768b; line-height:1.6; margin-top:4px; }
+.auth-school-divisions { border:0; border-top:1px solid #d5dfe8; margin:15px 0 0; padding:13px 0 0; min-width:0; }
+.auth-school-divisions legend { color:#284967; font:600 11px Arial,sans-serif; padding:0 8px 0 0; }
+.auth-school-option { display:flex; gap:9px; align-items:center; margin:10px 0; font:13px Arial,sans-serif; color:#254159; cursor:pointer; }
+.auth-school-option input { accent-color:#183a5e; }
+.auth-school-help { margin:9px 0 0; color:#6c7885; font:11px/1.6 Arial,sans-serif; }
+.school-settings-division { max-width:460px; margin:14px 0; }
+#saveSchoolAffiliation { margin:8px 0 0; }

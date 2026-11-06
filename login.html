@@ -42,6 +42,18 @@
             <label class="auth-label" for="authConfirm">Confirm password</label>
             <input class="auth-input" type="password" id="authConfirm" autocomplete="new-password" minlength="8" placeholder="Repeat your password">
           </div>
+          <div class="auth-school-select" id="schoolSignupGroup" hidden>
+            <label class="auth-school-check" for="isCannonStudent">
+              <input type="checkbox" id="isCannonStudent">
+              <span><strong>Cannon School student</strong><small>Personalize your Solenary workspace for your school.</small></span>
+            </label>
+            <fieldset id="cannonDivisionGroup" class="auth-school-divisions" hidden>
+              <legend>Which school division?</legend>
+              <label class="auth-school-option"><input type="radio" name="signupCannonDivision" value="middle"> Middle School</label>
+              <label class="auth-school-option"><input type="radio" name="signupCannonDivision" value="upper"> Upper School</label>
+              <p class="auth-school-help">Upper School students get the Cannon US Planner. A Middle School planner may be added later.</p>
+            </fieldset>
+          </div>
           <p class="auth-message" id="authMessage" role="status" aria-live="polite" hidden></p>
           <button class="auth-submit" id="authSubmit" type="submit">Log in to Solenary</button>
           <button class="auth-text-link" id="forgotButton" type="button">Forgot your password?</button>

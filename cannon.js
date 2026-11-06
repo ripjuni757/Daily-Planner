@@ -8,6 +8,12 @@
   let user;
   try{const {data,error}=await client.auth.getUser();if(error||!data?.user){location.replace('login.html');return;}user=data.user;}
   catch(e){boot.textContent='Could not verify your account. Check your connection and reload.';return;}
+  const school=user.user_metadata?.solenary_school;
+  const division=user.user_metadata?.solenary_school_division;
+  if(school!=='cannon' || division!=='upper'){
+    boot.innerHTML='This workspace is for Cannon Upper School accounts. To enable it, open <a href="index.html">Solenary → Settings → School affiliation</a> and select Cannon School / Upper School.';
+    return;
+  }
   const USER_ID=user.id;
   const PROFILE_ID='__solenary_cannon_us_profile_v1__';
   const emptyClass=()=>({name:'',teacher:'',room:''});

@@ -13,6 +13,7 @@
     $('authSubtitle').textContent=next==='signup'?'Start with a private calendar of your own.':'Your schedule, exactly where you left it.';
     $('authSubmit').textContent=next==='signup'?'Create my Solenary':'Log in to Solenary';
     $('confirmPasswordGroup').hidden=next!=='signup';
+    $('schoolSignupGroup').hidden=next!=='signup';
     $('authConfirm').required=next==='signup';
     $('authPassword').setAttribute('autocomplete',next==='signup'?'new-password':'current-password');
     $('authPassword').minLength=next==='signup'?12:8;
@@ -38,15 +39,36 @@
   if(recovering)showRecovery();
   $('loginTab').addEventListener('click',()=>setMode('login'));
   $('signupTab').addEventListener('click',()=>setMode('signup'));
+  const setSchoolSignup = () => {
+    const enabled=$('isCannonStudent').checked;
+    $('cannonDivisionGroup').hidden=!enabled;
+    document.querySelectorAll('input[name="signupCannonDivision"]').forEach(r=>r.required=enabled);
+  };
+  $('isCannonStudent').addEventListener('change',setSchoolSignup);
+  setSchoolSignup();
   $('authForm').addEventListener('submit',async event=>{
     event.preventDefault();if(busy)return;
     const email=$('authEmail').value.trim(),password=$('authPassword').value;
     if(mode==='signup' && password.length<12){message('Use at least 12 characters for a new password.',true);return;}
     if(mode==='signup' && password!==$('authConfirm').value){message('The passwords do not match.',true);return;}
+    const isCannonStudent=mode==='signup' && $('isCannonStudent').checked;
+    const schoolDivision=document.querySelector('input[name="signupCannonDivision"]:checked')?.value||'';
+    if(isCannonStudent && !['middle','upper'].includes(schoolDivision)){
+      message('Select Middle School or Upper School to continue.',true);return;
+    }
     setBusy(true);message('');
     try {
       if(mode==='signup'){
-        const {data,error}=await client.auth.signUp({email,password,options:{emailRedirectTo:new URL('login.html',location.href).href}});
+        const {data,error}=await client.auth.signUp({
+          email,password,
+          options:{
+            emailRedirectTo:new URL('login.html',location.href).href,
+            data:{
+              solenary_school:isCannonStudent?'cannon':null,
+              solenary_school_division:isCannonStudent?schoolDivision:null
+            }
+          }
+        });
         if(error)throw error;
         if(data.session){location.replace('index.html');return;}
         $('authPassword').value='';$('authConfirm').value='';

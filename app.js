@@ -22,6 +22,15 @@
   const NOTIFIED_KEY = `daymark.planner.notified.v2.${userId}`;
   const defaultSettings = { weekStart: 1, timeFormat: 12, duration: 60, notifications: false };
   const $ = (id) => document.getElementById(id);
+  const schoolProfile = {
+    school:user.user_metadata?.solenary_school==='cannon'?'cannon':null,
+    division:['middle','upper'].includes(user.user_metadata?.solenary_school_division)
+      ?user.user_metadata.solenary_school_division:null
+  };
+  function updateCannonLink(){
+    $('cannonUsNav').hidden=!(schoolProfile.school==='cannon' && schoolProfile.division==='upper');
+  }
+  updateCannonLink();
   const today = () => new Date();
   const pad = (n) => String(n).padStart(2, '0');
   const dateKey = (d) => `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
@@ -404,6 +413,10 @@
     $('settingWorkStart').value=compass.workStart;
     $('settingWorkEnd').value=compass.workEnd;
     $('settingBuffer').value=String(compass.bufferMinutes);
+    $('settingCannonStudent').checked=schoolProfile.school==='cannon';
+    $('settingCannonDivision').value=schoolProfile.division||'';
+    $('settingCannonDivisionGroup').hidden=!$('settingCannonStudent').checked;
+    $('schoolSettingStatus').textContent='School selection is self-reported; it does not verify school enrollment.';
     showDialog('settingsDialog');
   }
   function settingsChanged() {
@@ -969,6 +982,37 @@
   $('searchOpen').addEventListener('click',openSearch);
   $('searchInput').addEventListener('input',renderSearch);
   $('settingsOpen').addEventListener('click',openSettings);
+  $('settingCannonStudent').addEventListener('change',()=>{
+    $('settingCannonDivisionGroup').hidden=!$('settingCannonStudent').checked;
+    $('schoolSettingStatus').textContent='Save your school selection to update the workspace.';
+  });
+  $('saveSchoolAffiliation').addEventListener('click',async()=>{
+    const isCannon=$('settingCannonStudent').checked;
+    const division=isCannon?$('settingCannonDivision').value:null;
+    if(isCannon && !['middle','upper'].includes(division)){
+      $('schoolSettingStatus').textContent='Choose Middle School or Upper School first.';
+      return;
+    }
+    const button=$('saveSchoolAffiliation');button.disabled=true;
+    $('schoolSettingStatus').textContent='Saving school selection…';
+    try {
+      const {data,error}=await client.auth.updateUser({data:{
+        solenary_school:isCannon?'cannon':null,
+        solenary_school_division:isCannon?division:null
+      }});
+      if(error)throw error;
+      schoolProfile.school=data?.user?.user_metadata?.solenary_school==='cannon'?'cannon':null;
+      schoolProfile.division=['middle','upper'].includes(data?.user?.user_metadata?.solenary_school_division)
+        ?data.user.user_metadata.solenary_school_division:null;
+      updateCannonLink();
+      $('schoolSettingStatus').textContent=schoolProfile.school==='cannon' && schoolProfile.division==='upper'
+        ?'Saved. Cannon US Planner is now available under Your workspace.'
+        :'Saved. Your workspace has been updated.';
+      notify('School preferences saved.');
+    } catch(err){
+      $('schoolSettingStatus').textContent=`Could not save: ${err.message||'Connection issue'}`;
+    } finally{button.disabled=false;}
+  });
   ['settingWeekStart','settingTimeFormat','settingDuration'].forEach(id=>$(id).addEventListener('change',settingsChanged));
   $('settingNotifications').addEventListener('change',notificationsChanged);
   $('clearDataButton').addEventListener('click',async()=>{
