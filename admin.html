@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'self'; object-src 'none'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' https://ixcxqqncddztdffsfewo.supabase.co wss://ixcxqqncddztdffsfewo.supabase.co; form-action 'self'; font-src 'self' data:; upgrade-insecure-requests">
+<meta name="referrer" content="no-referrer"><meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#112943"><title>Administration — Solenary</title>
+<link rel="stylesheet" href="style.css"><link rel="stylesheet" href="admin.css">
+</head><body class="admin-body">
+<header class="admin-header"><a class="admin-brand" href="./"><img src="solenary-mark.svg" alt=""><span>SOLENARY <small>ADMINISTRATION</small></span></a><div><a class="admin-return" href="./">← Back to planner</a><button id="adminRefresh" type="button">Refresh</button></div></header>
+<main class="admin-main">
+  <div class="eyebrow">PRIVATE WORKSPACE</div><h1>Administration</h1>
+  <p class="admin-intro">A high-level view of Solenary accounts and user-submitted feedback. Only approved administrators can access this data.</p>
+  <div id="adminState" class="admin-state" role="status">Checking your administrator access…</div>
+  <section id="adminContent" hidden>
+    <div class="admin-stat-grid" aria-label="Site statistics">
+      <div class="admin-stat"><span>Registered accounts</span><strong id="adminUserCount">—</strong><small>Supabase Auth users</small></div>
+      <div class="admin-stat"><span>Feedback received</span><strong id="adminFeedbackCount">—</strong><small>All submissions</small></div>
+      <div class="admin-stat"><span>Needs review</span><strong id="adminNewCount">—</strong><small>New feedback</small></div>
+    </div>
+    <div class="admin-section-top"><div><div class="eyebrow">LISTEN TO YOUR USERS</div><h2>Feedback inbox</h2></div>
+      <label for="adminFeedbackFilter">Filter <select id="adminFeedbackFilter"><option value="all">All</option><option value="new">New</option><option value="reviewed">Reviewed</option><option value="resolved">Resolved</option></select></label>
+    </div>
+    <p class="admin-hint">Showing the 200 most recent submissions. Messages are private and accessible only to authorized administrators.</p>
+    <div id="adminFeedbackList" class="admin-feedback-list"></div>
+  </section>
+</main>
+<script src="supabase-config.js"></script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0"></script><script src="supabase-client.js"></script><script src="admin.js"></script>
+</body></html>
