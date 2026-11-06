@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'self'; object-src 'none'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' https://ixcxqqncddztdffsfewo.supabase.co wss://ixcxqqncddztdffsfewo.supabase.co; form-action 'self'; font-src 'self' data:; upgrade-insecure-requests">
+  <meta name="referrer" content="no-referrer">
+  <meta name="theme-color" content="#112943">
+  <meta name="description" content="Sign in to your personal Solenary planner.">
+  <title>Log in — Solenary</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="auth-body">
+  <main class="auth-layout">
+    <section class="auth-story">
+      <div class="auth-brand-block"><div class="auth-brand"><img src="solenary-mark.svg" alt="" aria-hidden="true"><span>SOLENARY</span></div><div class="auth-brand-mini-tagline">Your days, your rhythm.</div></div>
+      <div class="auth-story-content">
+        <div class="auth-overline">A PERSONAL PLANNING SPACE</div>
+        <h1>Your days,<br>beautifully ordered.</h1>
+        <p class="auth-gold-tagline">Your days, your rhythm.</p>
+        <p class="auth-story-description">One private space for every task, commitment, and important date. Your calendar follows your account.</p>
+        <div class="auth-rule"></div>
+        <div class="auth-story-points">WEEKLY PLANNING &nbsp;&middot;&nbsp; MONTHLY CALENDAR &nbsp;&middot;&nbsp; PRIVATE SYNC</div>
+      </div>
+      <div class="auth-legal">SOLENARY &nbsp; / &nbsp; YOUR DAYS, YOUR RHYTHM.</div>
+    </section>
+    <section class="auth-form-side">
+      <div class="auth-form-wrap">
+        <div class="auth-overline dark">WELCOME TO SOLENARY</div>
+        <h2 id="authTitle">Sign in to your account</h2>
+        <p id="authSubtitle" class="auth-subtitle">Your schedule, exactly where you left it.</p>
+        <div class="auth-tabs" role="group" aria-label="Account action" id="authTabs">
+          <button class="auth-tab active" id="loginTab" type="button" aria-pressed="true">Log in</button>
+          <button class="auth-tab" id="signupTab" type="button" aria-pressed="false">Create account</button>
+        </div>
+        <form id="authForm" class="auth-form">
+          <label class="auth-label" for="authEmail">Email address</label>
+          <input class="auth-input" type="email" id="authEmail" autocomplete="email" required placeholder="you@example.com">
+          <label class="auth-label" for="authPassword">Password</label>
+          <input class="auth-input" type="password" id="authPassword" autocomplete="current-password" minlength="8" required placeholder="At least 8 characters">
+          <div id="confirmPasswordGroup" hidden>
+            <label class="auth-label" for="authConfirm">Confirm password</label>
+            <input class="auth-input" type="password" id="authConfirm" autocomplete="new-password" minlength="8" placeholder="Repeat your password">
+          </div>
+          <p class="auth-message" id="authMessage" role="status" aria-live="polite" hidden></p>
+          <button class="auth-submit" id="authSubmit" type="submit">Log in to Solenary</button>
+          <button class="auth-text-link" id="forgotButton" type="button">Forgot your password?</button>
+        </form>
+        <form id="recoveryForm" class="auth-form" hidden>
+          <label class="auth-label" for="newPassword">Choose a new password</label>
+          <input class="auth-input" id="newPassword" type="password" autocomplete="new-password" minlength="12" required>
+          <button type="submit" class="auth-submit" id="recoverySubmit">Update password</button>
+        </form>
+        <div class="auth-privacy">Your personal calendar is private. Solenary automatically measures approximate active minutes while you're signed in; site administrators can view registration emails, account dates and usage totals. It does not record your task contents or keystrokes. <a href="privacy.html">Read our privacy and usage notice</a>.</div>
+      </div>
+      <div class="auth-form-foot">Thoughtfully planned. One day at a time.</div>
+    </section>
+  </main>
+  <script src="supabase-config.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0"></script>
+  <script src="supabase-client.js"></script>
+  <script src="auth.js"></script>
+</body>
+</html>

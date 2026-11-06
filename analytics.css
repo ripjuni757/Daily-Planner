@@ -1,0 +1,30 @@
+/* Solenary v8 — Users & Analytics, matching the existing navy/gold visual language. */
+.admin-tabs{display:flex;gap:0;border-bottom:1px solid #d7e1ea;margin:30px 0 0}
+.admin-tabs button{background:transparent;color:#71869a;border:0;border-bottom:3px solid transparent;padding:12px 20px;font-size:14px;cursor:pointer}
+.admin-tabs button:hover{color:#1e4465;background:#f0f4f7}
+.admin-tabs button.is-active{color:#163856;border-bottom-color:#baa174;font-weight:600}
+.admin-usage-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px;margin:18px 0 23px}
+.admin-user-toolbar{display:flex;align-items:end;justify-content:space-between;gap:16px;margin:25px 0 13px}
+.admin-user-toolbar label{display:grid;gap:7px;color:#566c80;font:12px Arial,sans-serif;flex:1;max-width:390px}
+.admin-user-toolbar input{padding:12px 13px;border:1px solid #cbd9e5;border-radius:0;background:#fff;color:#193b59;font:13px Arial,sans-serif;min-width:0;width:100%}
+.admin-user-toolbar button,.admin-users-pagination button{border:1px solid #c6d5e1;background:white;color:#244e70;padding:10px 14px;cursor:pointer;font-size:12px}
+.admin-user-toolbar button:hover,.admin-users-pagination button:hover:not(:disabled){border-color:#ac9674;color:#132d49}
+.admin-users-pagination button:disabled{opacity:.4;cursor:not-allowed}
+.admin-users-state{font:12px Arial,sans-serif;color:#657c90;margin:12px 0 16px;min-height:18px}
+.admin-users-state.error{color:#a43b47}
+.admin-table-scroll{overflow-x:auto;border:1px solid #dae5ec;background:white}
+.admin-users-table{border-collapse:collapse;min-width:930px;width:100%;font:12px Arial,sans-serif}
+.admin-users-table thead{background:#eaf0f5;color:#264965}
+.admin-users-table th{text-align:left;padding:13px 14px;font-weight:600;white-space:nowrap}
+.admin-users-table td{border-top:1px solid #ebeff3;padding:14px;color:#344e64;vertical-align:top;white-space:nowrap}
+.admin-users-table td:first-child{white-space:normal;min-width:225px;overflow-wrap:anywhere;color:#1d3c55}
+.admin-users-table td:nth-last-child(-n+2),.admin-users-table th:nth-last-child(-n+2){text-align:right;font-variant-numeric:tabular-nums}
+.admin-usage-optin{display:inline-block;font:10px Arial,sans-serif;padding:5px 7px;border:1px solid #cddbcf;color:#35624d;background:#f1f7f3}
+.admin-usage-optin.off{border-color:#dfd9d1;color:#7e7b75;background:#f8f7f5}
+.admin-users-pagination{display:flex;gap:15px;justify-content:flex-end;align-items:center;padding:15px 0 20px;color:#718497;font:12px Arial,sans-serif}
+.usage-consent-banner{position:fixed;bottom:22px;right:22px;z-index:200;background:#fff;border:1px solid #c8d5df;border-top:3px solid #b49b76;box-shadow:0 12px 35px rgba(11,35,57,.18);padding:18px 20px;width:min(440px,calc(100vw - 30px));color:#26445d}
+.usage-consent-banner p{font:13px/1.7 Arial,sans-serif;margin:8px 0 14px}
+.usage-consent-actions{display:flex;gap:10px;justify-content:flex-end;align-items:center}
+#usageConsentMessage.error{color:#a43b47}
+.usage-consent-banner[hidden]{display:none!important}
+@media(max-width:650px){.admin-usage-grid{grid-template-columns:1fr}.admin-tabs button{padding:12px 13px}.admin-user-toolbar{align-items:stretch;flex-direction:column}.admin-user-toolbar label{max-width:none;width:100%}.usage-consent-banner{bottom:12px;right:12px}}

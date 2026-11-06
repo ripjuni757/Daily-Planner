@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'self'; object-src 'none'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' https://ixcxqqncddztdffsfewo.supabase.co wss://ixcxqqncddztdffsfewo.supabase.co; form-action 'self'; font-src 'self' data:; upgrade-insecure-requests">
+<meta name="referrer" content="no-referrer"><meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#112943"><title>Administration — Solenary</title>
+<link rel="stylesheet" href="style.css"><link rel="stylesheet" href="admin.css"><link rel="stylesheet" href="analytics.css">
+</head><body class="admin-body">
+<header class="admin-header"><a class="admin-brand" href="./"><img src="solenary-mark.svg" alt=""><span>SOLENARY <small>ADMINISTRATION</small></span></a><div><a class="admin-return" href="./">← Back to planner</a><button id="adminRefresh" type="button">Refresh</button></div></header>
+<main class="admin-main">
+  <div class="eyebrow">PRIVATE WORKSPACE</div><h1>Administration</h1>
+  <p class="admin-intro">A private overview of Solenary accounts, active-use analytics, and user-submitted feedback. Only approved administrators can access this information.</p>
+  <div id="adminState" class="admin-state" role="status">Checking your administrator access…</div>
+  <section id="adminContent" hidden>
+    <div class="admin-stat-grid" aria-label="Site statistics">
+      <div class="admin-stat"><span>Registered accounts</span><strong id="adminUserCount">—</strong><small>Supabase Auth users</small></div>
+      <div class="admin-stat"><span>Feedback received</span><strong id="adminFeedbackCount">—</strong><small>All submissions</small></div>
+      <div class="admin-stat"><span>Needs review</span><strong id="adminNewCount">—</strong><small>New feedback</small></div>
+    </div>
+    <div class="admin-tabs" role="tablist" aria-label="Administration sections">
+      <button id="adminTabFeedback" type="button" role="tab" aria-selected="true" aria-controls="adminFeedbackPanel" class="is-active">Feedback</button>
+      <button id="adminTabUsers" type="button" role="tab" aria-selected="false" aria-controls="adminUsersPanel">Users &amp; Analytics</button>
+    </div>
+    <section id="adminFeedbackPanel" role="tabpanel" aria-labelledby="adminTabFeedback">
+    <div class="admin-section-top"><div><div class="eyebrow">LISTEN TO YOUR USERS</div><h2>Feedback inbox</h2></div>
+      <label for="adminFeedbackFilter">Filter <select id="adminFeedbackFilter"><option value="all">All</option><option value="new">New</option><option value="reviewed">Reviewed</option><option value="resolved">Resolved</option></select></label>
+    </div>
+    <p class="admin-hint">Showing the 200 most recent submissions. Messages are private and accessible only to authorized administrators.</p>
+    <div id="adminFeedbackList" class="admin-feedback-list"></div>
+    </section>
+    <section id="adminUsersPanel" role="tabpanel" aria-labelledby="adminTabUsers" hidden>
+      <div class="admin-section-top"><div><div class="eyebrow">UNDERSTAND ADOPTION</div><h2>Users &amp; Analytics</h2></div></div>
+      <p class="admin-hint">Account emails and dates come from Supabase Authentication. Activity minutes are automatically collected for signed-in accounts starting with this version. Days are counted in UTC. No task content or keystrokes are collected.</p>
+      <div class="admin-usage-grid" aria-label="Usage statistics">
+        <div class="admin-stat"><span>Active users · last 7 days</span><strong id="adminActive7">—</strong><small>Accounts with tracked activity</small></div>
+        <div class="admin-stat"><span>Minutes · last 7 days</span><strong id="adminMinutes7">—</strong><small>All tracked accounts combined</small></div>
+        <div class="admin-stat"><span>Minutes · since tracking started</span><strong id="adminMinutesAll">—</strong><small>History recorded since rollout</small></div>
+      </div>
+      <div class="admin-user-toolbar">
+        <label for="adminUserSearch">Search by email <input type="search" id="adminUserSearch" maxlength="120" autocomplete="off" placeholder="Filter registered users…"></label>
+        <button id="adminUsersRefresh" type="button">Refresh users</button>
+      </div>
+      <p id="adminUsersState" class="admin-users-state" role="status" aria-live="polite">Select this tab to load registered users.</p>
+      <div class="admin-table-scroll"><table class="admin-users-table">
+        <thead><tr><th scope="col">Email</th><th scope="col">Registered</th><th scope="col">Last sign-in</th><th scope="col">Last tracked</th><th scope="col">7-day minutes</th><th scope="col">Total minutes</th></tr></thead>
+        <tbody id="adminUsersBody"></tbody>
+      </table></div>
+      <div class="admin-users-pagination"><button id="adminUsersPrev" type="button" disabled>← Previous</button><span id="adminUsersPage">Page 1</span><button id="adminUsersNext" type="button" disabled>Next →</button></div>
+      <p class="admin-hint">Activity minutes are estimates, not exact screen time. Users can delete prior usage records in Settings. <a href="privacy.html">Privacy notice</a>.</p>
+    </section>
+  </section>
+</main>
+<script src="supabase-config.js"></script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0"></script><script src="supabase-client.js"></script><script src="admin.js"></script>
+</body></html>
