@@ -70,3 +70,4 @@ Then sign into Solenary and reload. **Admin dashboard** should appear in the sid
 - Feedback appears after running the migration; if it has not run, the form shows a setup-related error on submission.
 - GitHub Pages can serve this static website, but it cannot privately store backend keys or run secure server jobs by itself.
 - The admin user count includes registered Supabase Auth accounts, including accounts that may not have confirmed email. It is not a count of active users.
+
