@@ -14,6 +14,7 @@
     $('authSubmit').textContent=next==='signup'?'Create my Solenary':'Log in to Solenary';
     $('confirmPasswordGroup').hidden=next!=='signup';
     $('schoolSignupGroup').hidden=next!=='signup';
+    document.body.dataset.accountMode = next;
     $('authConfirm').required=next==='signup';
     $('authPassword').setAttribute('autocomplete',next==='signup'?'new-password':'current-password');
     $('authPassword').minLength=next==='signup'?12:8;
@@ -39,6 +40,8 @@
   if(recovering)showRecovery();
   $('loginTab').addEventListener('click',()=>setMode('login'));
   $('signupTab').addEventListener('click',()=>setMode('signup'));
+  // Direct signup URL makes onboarding easy to test and avoids hidden school choices.
+  if (new URLSearchParams(window.location.search).get('mode') === 'signup') setMode('signup');
   const setSchoolSignup = () => {
     const enabled=$('isCannonStudent').checked;
     $('cannonDivisionGroup').hidden=!enabled;
