@@ -651,9 +651,35 @@
     return Array.isArray(ids) ? ids.filter(id=>available.some(t=>t.id===id)).slice(0,3)
       : available.slice().sort((a,b)=>(b.priority==='high')-(a.priority==='high') || taskComparator(a,b)).slice(0,3).map(t=>t.id);
   }
+  function compassChecklistItem(t, priorityNumber = null) {
+    // A single task may be completed from Compass without opening its edit dialog.
+    // The separate Edit button keeps both actions accessible on keyboard and mobile.
+    const isPriority = priorityNumber !== null;
+    const kindLabel = (t.seriesId || t.recurring === true) ? 'Recurring' : t.kind === 'reminder' ? 'Reminder' : 'Task';
+    const time = t.allDay ? 'All day' : validTime(t.start) ? timeLabel(t.start) : 'Unscheduled';
+    return `<div class="compass-list-row ${isPriority?'compass-list-row--top':'compass-list-row--rest'} ${t.completed?'finished':''}">
+      <button type="button" class="compass-check-action" data-compass-check="${escapeHTML(t.id)}"
+        aria-pressed="${t.completed?'true':'false'}"
+        aria-label="${escapeHTML((t.completed?'Mark not complete: ':'Mark complete: ')+t.title)}"
+        title="${t.completed?'Mark incomplete':'Mark complete'}">
+        <span class="priority-square" aria-hidden="true">${t.completed?'✓':''}</span>
+        ${isPriority?`<span class="compass-rank" aria-hidden="true">${priorityNumber}.</span>`:''}
+        <span class="compass-item-copy"><span class="priority-label">${escapeHTML(t.title)}</span>
+        <span class="compass-item-detail"><span class="compass-kind-dot ${taskColorClass(t)}" aria-hidden="true"></span>${escapeHTML(kindLabel)} · ${escapeHTML(time)}</span></span>
+      </button>
+      <button type="button" class="compass-edit-item" data-edit="${escapeHTML(t.id)}" title="Edit ${escapeHTML(t.title)}"
+        aria-label="Edit ${escapeHTML(t.title)}">Edit ↗</button>
+    </div>`;
+  }
   function renderCompass() {
     const k=dateKey(selectedDate), b=dayCapacity(k), goal=compass.focus?.[k]||'';
-    const chosen=focusPriorityIds(k), goals=chosen.map(id=>tasks.find(t=>t.id===id)).filter(Boolean);
+    const items=dayTasks(k).slice().sort(taskComparator);
+    const chosen=focusPriorityIds(k);
+    const goals=chosen.map(id=>items.find(t=>t.id===id)).filter(Boolean);
+    const chosenIds=new Set(goals.map(t=>t.id));
+    // Include all non-priority items for the chosen day: tasks, reminders,
+    // recurring occurrences, and imported Google Calendar events.
+    const others=items.filter(t=>!chosenIds.has(t.id)).sort((a,b)=>Number(a.completed)-Number(b.completed)||taskComparator(a,b));
     const projects=(compass.projects||[]).filter(p=>p.deadline>=dateKey(today())).sort((a,b)=>a.deadline.localeCompare(b.deadline)).slice(0,2);
     const hasOverdue=tasks.some(t=>!t.completed && t.kind==='task' && !t.fixed && t.date<dateKey(today()));
     const percent=b.budget ? clamp(Math.round(b.planned/b.budget*100),0,100):b.planned?100:0;
@@ -662,8 +688,11 @@
         <div class="compass-top"><span class="intel-kicker">01 / SOLENARY COMPASS</span><button class="intel-link" type="button" id="focusEdit">Edit direction ↗</button></div>
         <div class="compass-day">${escapeHTML(fmtDate(fromKey(k),{weekday:'long',month:'long',day:'numeric'}))}</div>
         <h2 class="compass-objective">${goal ? escapeHTML(goal) : 'What matters most today?'}</h2>
-        <div class="compass-subtitle">YOUR THREE PRIORITIES <span>${goals.filter(t=>t.completed).length} / ${goals.length} complete</span></div>
-        <div class="compass-priorities">${goals.length?goals.map((t,i)=>`<button type="button" class="compass-priority ${t.completed?'finished':''}" data-compass-check="${escapeHTML(t.id)}"><span class="priority-square">${t.completed?'✓':''}</span><span class="priority-label">${escapeHTML(t.title)}</span><span class="priority-index">0${i+1}</span></button>`).join(''):'<p class="compass-placeholder">Create tasks for this date, then choose the three that matter most.</p>'}</div>
+        <div class="compass-subtitle">YOUR TOP THREE <span>${goals.filter(t=>t.completed).length} / ${goals.length} complete</span></div>
+        <div class="compass-priorities">${goals.length?goals.map((t,i)=>compassChecklistItem(t,i+1)).join(''):'<p class="compass-placeholder">Select up to three priorities in Edit direction, or add tasks for this day.</p>'}</div>
+        <div class="compass-subtitle compass-other-heading">THE REST OF YOUR DAY <span>${others.filter(t=>t.completed).length} / ${others.length} complete</span></div>
+        <div class="compass-other-tasks">${others.length?others.map(t=>compassChecklistItem(t)).join(''):'<p class="compass-placeholder">No other items scheduled for this day.</p>'}</div>
+        ${items.length?`<p class="compass-daily-progress">${items.filter(t=>t.completed).length} of ${items.length} items completed today</p>`:''}
       </section>
       <section class="planning-card" aria-label="Daily workload reality check">
         <div class="compass-top"><span class="intel-kicker">02 / REALITY CHECK</span><button type="button" class="intel-link" id="openPlannerSettings">Set hours ↗</button></div>
@@ -898,7 +927,7 @@
     if(id){
       const existing=tasks.find(t=>t.id===id);if(!existing)return;
       const updated={...existing,completed:!existing.completed,completedAt:existing.completed?null:new Date().toISOString()};
-      try{await cloudUpsert([updated]);tasks=tasks.map(t=>t.id===id?updated:t);render();notify(updated.completed?'Priority completed.':'Priority reopened.');}
+      try{await cloudUpsert([updated]);tasks=tasks.map(t=>t.id===id?updated:t);render();notify(updated.completed?'Task completed.':'Task reopened.');}
       catch(err){notify(`Could not update task: ${err.message}`);}
     }
   });

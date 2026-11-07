@@ -300,6 +300,31 @@
 .priority-label{font:13px Georgia,'Times New Roman',serif;flex:1;overflow-wrap:anywhere}
 .priority-index{font:10px Arial,sans-serif;color:#9aa8b5}
 .compass-placeholder{font:12px/1.5 Georgia,'Times New Roman',serif;color:#7b8999}
+
+/* Solenary v11.1: complete daily checklist, with ranked top three and unnumbered rest. */
+.compass-priorities,.compass-other-tasks{border-top:1px solid var(--line)}
+.compass-list-row{display:flex;align-items:stretch;gap:6px;min-width:0;border-bottom:1px solid var(--line-soft)}
+.compass-list-row--top{background:linear-gradient(90deg,#f5f8fb 0%,#fff 66%)}
+.compass-check-action{display:flex;align-items:center;gap:10px;flex:1;min-width:0;min-height:51px;padding:9px 3px;background:none;border:0;text-align:left;color:#243b55;cursor:pointer}
+.compass-check-action:hover .priority-label{color:#0f4c76}
+.compass-check-action:focus-visible,.compass-edit-item:focus-visible{outline:2px solid #2b668c;outline-offset:-2px}
+.compass-list-row .priority-square{height:18px;width:18px;line-height:17px;flex:0 0 18px;border:1px solid #93a9ba;border-radius:2px;display:inline-block;background:#fff;color:#fff;font:12px/17px Arial,sans-serif;text-align:center}
+.compass-list-row.finished .priority-square{background:#1f466c;color:#fff;border-color:#1f466c}
+.compass-rank{font:700 13px/1.3 Georgia,'Times New Roman',serif;color:#2b4b69;min-width:18px;text-align:center}
+.compass-item-copy{display:flex;flex-direction:column;gap:4px;min-width:0;flex:1}
+.compass-list-row .priority-label{font:13px/1.35 Georgia,'Times New Roman',serif;overflow-wrap:anywhere}
+.compass-list-row.finished .priority-label{text-decoration:line-through;color:#8996a4}
+.compass-item-detail{display:flex;align-items:center;gap:6px;font:10px/1.3 Arial,sans-serif;color:#7a8b9a}
+.compass-kind-dot{width:7px;height:7px;flex:0 0 7px;border-radius:50%;background:#3574ab}
+.compass-kind-dot.cat-reminder{background:#b24a55}
+.compass-kind-dot.cat-weekly{background:#7b55b1}
+.compass-edit-item{align-self:center;padding:10px 5px;border:0;background:none;color:#466581;font:11px Arial,sans-serif;white-space:nowrap;cursor:pointer}
+.compass-edit-item:hover{text-decoration:underline}
+.compass-other-heading{margin-top:22px}
+.compass-other-tasks .compass-check-action{min-height:46px}
+.compass-daily-progress{margin:13px 0 0;color:#708196;font:11px Arial,sans-serif;text-align:right}
+@media(max-width:560px){.compass-check-action{gap:8px}.compass-edit-item{padding:9px 2px}}
+
 .reality-numbers{display:flex;justify-content:space-between;gap:10px;margin:7px 0 15px}
 .reality-numbers>div{display:grid;gap:6px}
 .reality-amount{font-size:24px;color:var(--navy);font-variant-numeric:tabular-nums}
