@@ -133,6 +133,11 @@
     tasks = await fetchCloudTasks();
     render();
   }
+  // Google Calendar's server-side sync may add or update user-scoped tasks.
+  // Refresh the UI after those database changes without losing current view.
+  window.addEventListener('solenary:calendar-synced', () => {
+    reloadCloud().catch(error => notify(`Could not refresh synced tasks: ${error.message}`));
+  });
   const notify = (msg) => { clearTimeout(toastTimer); $('toast').textContent=msg; $('toast').hidden=false; toastTimer=setTimeout(()=>{$('toast').hidden=true;},4500); };
   const showDialog = (id) => { const d=$(id); if (typeof d.showModal==='function') d.showModal(); };
   const closeDialog = (id) => { const d=$(id); if (d.open) d.close(); };

@@ -477,3 +477,19 @@
 .auth-school-help { margin:9px 0 0; color:#6c7885; font:11px/1.6 Arial,sans-serif; }
 .school-settings-division { max-width:460px; margin:14px 0; }
 #saveSchoolAffiliation { margin:8px 0 0; }
+
+/* Solenary v10: connected Google Calendar controls, matching existing interface. */
+.google-sync-card{border:1px solid #c7d6e3;background:#f6f9fc;padding:18px;margin:10px 0 18px}
+.google-sync-header{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:9px}
+.google-sync-header h3{margin:0;color:#173755;font-size:19px;font-weight:normal;font-family:Georgia,'Times New Roman',serif}
+.google-sync-pill{display:inline-block;border:1px solid #aabdc9;padding:4px 9px;font:11px Arial,sans-serif;letter-spacing:.02em;color:#37546d;background:#fff}
+.google-sync-card .helper{color:#4b6378}
+.google-sync-actions{display:flex;gap:9px;align-items:center;flex-wrap:wrap;margin-top:12px}
+.google-sync-state{font:12px/1.6 Arial,sans-serif;color:#2b4b6a;margin:10px 0;min-height:21px}
+.google-sync-error{color:#9f253b}
+.google-sync-warning{font:12px/1.6 Arial,sans-serif;color:#7a4b28;border-left:3px solid #d7b887;padding:4px 10px;background:#fbf8f2;margin-top:10px}
+.google-sync-options{display:grid;gap:12px;margin-top:12px}
+.google-sync-card .google-sync-checkbox{display:flex;align-items:flex-start;gap:9px;font:13px/1.45 Georgia,'Times New Roman',serif;color:#233e55}
+.google-sync-card .google-sync-checkbox input{margin-top:3px;flex:none}
+.google-last-synced{font:11px Arial,sans-serif;color:#536d81}
+.google-sync-card .action-button,.google-sync-card .text-button{min-height:34px}
