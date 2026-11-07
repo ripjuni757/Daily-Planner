@@ -8,11 +8,11 @@
   <meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'self'; object-src 'none'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' https://ixcxqqncddztdffsfewo.supabase.co wss://ixcxqqncddztdffsfewo.supabase.co; form-action 'self'; font-src 'self' data:; upgrade-insecure-requests">
   <meta name="description" content="Solenary's student-made Cannon Upper School rotating block planner">
   <title>Cannon US Planner | Solenary</title>
-  <link rel="stylesheet" href="cannon.css">
+  <link rel="stylesheet" href="cannon.css?v=12">
 </head>
 <body>
   <header class="c-topbar">
-    <a class="c-brand" href="./" aria-label="Back to Solenary"><img src="solenary-mark.svg" alt="" width="36" height="36"><span><strong>S O L E N A R Y</strong><small>YOUR DAYS, YOUR RHYTHM.</small></span></a>
+    <a class="c-brand" href="./" aria-label="Back to Solenary"><img src="solenary-mark.svg" alt="" width="36" height="36"><span><span class="c-brand-title"><strong>S O L E N A R Y</strong><span class="c-vlabel" aria-label="Solenary version 12">v.12</span></span><small>YOUR DAYS, YOUR RHYTHM.</small></span></a>
     <div class="c-toplinks"><a href="./">← Main planner</a><span id="currentUser" class="c-user" aria-label="Signed-in account"></span></div>
   </header>
   <div id="cannonBoot" class="boot" role="status">Opening your Cannon US Planner…</div>
@@ -30,15 +30,15 @@
       <div class="c-side-rule"></div>
       <div class="c-side-heading">SCHEDULE LEGEND</div>
       <div class="c-legend"><i class="c-dot class-dot"></i> Class block A–F</div>
-      <div class="c-legend"><i class="c-dot drop-dot"></i> Drop / schedule notice</div>
+      <div class="c-legend"><i class="c-dot drop-dot"></i> Dropped course / no class</div>
       <div class="c-legend"><i class="c-dot flex-dot"></i> Advisory / lunch / flex</div>
       <div class="c-legend"><i class="c-dot closed-dot"></i> No regular classes</div>
-      <p class="c-side-note">Personal classes and notes are saved to your signed-in Solenary account. Approximate active-use minutes are recorded, as explained in the <a href="privacy.html">privacy notice</a>. The rotation is based on the 2026–27 printed planner.</p>
+      <p class="c-side-note">Click any class block to add and check off assignments, homework, quizzes, tests, or exams. Course drops are inferred from your subjects and can be corrected in My classes.</p><p class="c-side-note">Personal classes and notes are saved to your signed-in Solenary account. Approximate active-use minutes are recorded, as explained in the <a href="privacy.html">privacy notice</a>. The rotation is based on the 2026–27 printed planner.</p>
     </aside>
     <main class="c-main">
       <section class="c-intro">
         <div class="c-eyebrow">SOLENARY / SCHOOL PLANNING</div>
-        <div class="c-intro-row"><div><h1>Cannon US Planner</h1><p>Your classes. Your blocks. Your week.</p></div><span class="c-pill">2026–27 · Upper School</span></div>
+        <div class="c-intro-row"><div><h1>Cannon US Planner</h1><p>Your classes. Your assignments. Your week.</p></div><span class="c-pill">2026–27 · Upper School · v12</span></div>
       </section>
       <section class="c-week-nav" aria-label="Week navigation">
         <div><div class="c-eyebrow">THE WEEK AHEAD</div><h2 id="weekRange">November 9–15, 2026</h2><div id="weekStatus" class="c-week-status"></div></div>
@@ -46,16 +46,33 @@
       </section>
       <section class="c-week-grid" id="weekGrid" aria-label="Cannon Upper School Monday through Friday schedule"></section>
       <section class="c-lower"><div class="c-section-head"><div><div class="c-eyebrow">MAKE IT YOURS</div><h2 id="selectedDateHeading">Daily details</h2></div><span id="selectedDateStatus"></span></div><div class="c-details"><div class="c-panel"><h3>My priorities</h3><div class="c-priority-fields"><label><span>Priority 1</span><input id="priority1" maxlength="180" placeholder="An assignment or goal…"></label><label><span>Priority 2</span><input id="priority2" maxlength="180" placeholder="Another priority…"></label><label><span>Priority 3</span><input id="priority3" maxlength="180" placeholder="One more thing…"></label></div></div><div class="c-panel"><h3>Notes for this day</h3><textarea id="dailyNotes" rows="6" maxlength="3000" placeholder="Homework, meeting reminders, questions to ask during office hours…"></textarea><div class="c-save-row"><span id="saveStatus" role="status" aria-live="polite">Changes save to your account.</span><button id="saveNotes" type="button" class="c-primary">Save daily notes</button></div></div></div></section>
-      <section class="c-disclaimer"><strong>About this schedule.</strong> Based on photos of Cannon School's printed 2026–27 planner (November–January). Day rotations, drop subjects and exceptions are preloaded only for pictured dates. Special schedules may change; check school announcements. This independent student project is not affiliated with or endorsed by Cannon School.</section>
+      <section class="c-lower c-schoolwork-section" aria-label="Upcoming school assignments">
+        <div class="c-section-head"><div><div class="c-eyebrow">SCHOOLWORK / THE NEXT SEVEN DAYS</div><h2>Assignments &amp; assessments</h2></div><span id="schoolworkWindow"></span></div>
+        <div class="c-panel c-upcoming-work" id="schoolworkSummary" aria-live="polite"></div>
+      </section>
+      <section class="c-disclaimer"><strong>About this schedule.</strong> Based on photos of Cannon School's printed 2026–27 planner (November–March). Day rotations, drop subjects and exceptions are preloaded only for pictured dates. Special schedules may change; check school announcements. This independent student project is not affiliated with or endorsed by Cannon School.</section>
     </main>
   </div>
-  <dialog id="courseDialog" aria-labelledby="courseDialogTitle"><form id="courseForm"><div class="c-dialog-head"><div><div class="c-eyebrow">ONE-TIME SETUP</div><h2 id="courseDialogTitle">My classes &amp; teachers</h2></div><button type="button" class="c-dialog-close" data-close="courseDialog" aria-label="Close">×</button></div><div class="c-dialog-body"><p class="c-help">Set each class once. Solenary places your class, teacher and room into A–F blocks on every documented school day.</p><div id="courseFields" class="c-course-fields"></div><div class="c-supplemental"><label><span>Advisory / advisor name</span><input id="advisorName" maxlength="120" placeholder="e.g., Advisory — Mr. Smith"></label><label><span>Zero Hour activity (optional)</span><input id="zeroHourName" maxlength="120" placeholder="Leave empty to display Zero Hour"></label></div></div><div class="c-dialog-actions"><button type="button" class="c-button" data-close="courseDialog">Cancel</button><button type="submit" class="c-primary">Save my classes</button></div></form></dialog>
-  <dialog id="dayDialog" aria-labelledby="dayDialogTitle"><form id="dayForm"><div class="c-dialog-head"><div><div class="c-eyebrow">PERSONAL SCHEDULE OVERRIDE</div><h2 id="dayDialogTitle">Edit selected school day</h2></div><button type="button" class="c-dialog-close" data-close="dayDialog" aria-label="Close">×</button></div><div class="c-dialog-body"><p class="c-help">Use this if your printed planner changes, or to add a date beyond the supplied reference pages. Overrides apply only to your account.</p><label><span>Schedule type</span><select id="dayMode"><option value="">Use printed reference</option><option value="1">US Day 1</option><option value="2">US Day 2</option><option value="3">US Day 3</option><option value="six">Six-block day</option><option value="early">Early dismissal</option><option value="closed">No regular classes</option><option value="special">Special schedule / see notice</option></select></label><label><span>Drop information</span><input id="dayDrop" maxlength="140" placeholder="e.g., Math Drop (A, C)"></label><label><span>Special event / notice</span><textarea id="dayNotice" rows="3" maxlength="350" placeholder="e.g., Assembly or alternate bell schedule"></textarea></label></div><div class="c-dialog-actions"><button type="button" class="c-button" id="clearDayOverride">Reset to reference</button><button type="submit" class="c-primary">Save day override</button></div></form></dialog>
+  <dialog id="courseDialog" aria-labelledby="courseDialogTitle"><form id="courseForm"><div class="c-dialog-head"><div><div class="c-eyebrow">ONE-TIME SETUP</div><h2 id="courseDialogTitle">My classes &amp; teachers</h2></div><button type="button" class="c-dialog-close" data-close="courseDialog" aria-label="Close">×</button></div><div class="c-dialog-body"><p class="c-help">Set each class once. Solenary places your class, teacher, and room into A–F blocks. Choose a subject or let Solenary infer it from the course name (e.g., History → Social Studies Drop).</p><div id="courseFields" class="c-course-fields"></div><div class="c-supplemental"><label><span>Advisory / advisor name</span><input id="advisorName" maxlength="120" placeholder="e.g., Advisory — Mr. Smith"></label><label><span>Zero Hour activity (optional)</span><input id="zeroHourName" maxlength="120" placeholder="Leave empty to display Zero Hour"></label></div></div><div class="c-dialog-actions"><button type="button" class="c-button" data-close="courseDialog">Cancel</button><button type="submit" class="c-primary">Save my classes</button></div></form></dialog>
+  <dialog id="dayDialog" aria-labelledby="dayDialogTitle"><form id="dayForm"><div class="c-dialog-head"><div><div class="c-eyebrow">PERSONAL SCHEDULE OVERRIDE</div><h2 id="dayDialogTitle">Edit selected school day</h2></div><button type="button" class="c-dialog-close" data-close="dayDialog" aria-label="Close">×</button></div><div class="c-dialog-body"><p class="c-help">Use this if your printed planner changes, or to add a date beyond the supplied reference pages. Overrides apply only to your account.</p><label><span>Schedule type</span><select id="dayMode"><option value="">Use printed reference</option><option value="1">US Day 1</option><option value="2">US Day 2</option><option value="3">US Day 3</option><option value="six">Six-block day</option><option value="early">Early dismissal</option><option value="closed">No regular classes</option><option value="special">Special schedule / see notice</option><option value="service">Day of Service</option></select></label><label><span>Drop information</span><input id="dayDrop" maxlength="140" placeholder="e.g., Math Drop (A, C)"></label><label><span>Special event / notice</span><textarea id="dayNotice" rows="3" maxlength="350" placeholder="e.g., Assembly or alternate bell schedule"></textarea></label></div><div class="c-dialog-actions"><button type="button" class="c-button" id="clearDayOverride">Reset to reference</button><button type="submit" class="c-primary">Save day override</button></div></form></dialog>
+  <dialog id="workDialog" aria-labelledby="workDialogTitle">
+    <div class="c-dialog-head"><div><div class="c-eyebrow">CLASSROOM / YOUR WORK</div><h2 id="workDialogTitle">Class block</h2><p class="c-dialog-description" id="workDialogDescription"></p></div><button type="button" class="c-dialog-close" data-close="workDialog" aria-label="Close">×</button></div>
+    <div class="c-dialog-body"><div class="c-dialog-section-heading"><h3>Saved for this class</h3><button type="button" class="c-button" id="workNew">＋ Add another</button></div><div id="workExisting" class="c-work-existing" aria-live="polite"></div><div class="c-dialog-separator"></div>
+      <form id="workForm"><input id="workSchoolDate" type="hidden"><input id="workBlock" type="hidden">
+        <div class="c-dialog-section-heading"><h3>Add or edit classwork</h3></div>
+        <div class="c-work-form-grid"><label><span>Type</span><select id="workType"><option>Assignment</option><option>Homework</option><option>Quiz</option><option>Test</option><option>Exam</option><option>Project</option><option>Reading</option><option>Presentation</option><option>Class note</option></select></label><label><span>Due date</span><input id="workDue" type="date" required></label></div>
+        <label><span>Title</span><input id="workTitle" maxlength="140" placeholder="e.g., Causes of World War I" required></label>
+        <label><span>Details / instructions</span><textarea id="workNotes" rows="4" maxlength="3000" placeholder="Pages, essay requirements, test chapters, teacher instructions…"></textarea></label>
+        <p class="c-work-helper">Saved to your account and shown in the main Solenary planner on its due date. You can complete it here or in Daily Compass. Google Calendar reflects changes according to your sync settings.</p>
+        <div class="c-work-actions"><button id="workDelete" class="c-danger" type="button" hidden>Delete item</button><button id="workSave" class="c-primary" type="submit">Add to planner</button></div>
+      </form>
+    </div>
+  </dialog>
   <div class="c-toast" id="toast" role="status" hidden></div>
   <script src="supabase-config.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0"></script>
   <script src="supabase-client.js"></script>
-  <script src="cannon.js"></script>
+  <script src="cannon.js?v=12"></script>
   <script src="usage.js"></script>
 </body>
 </html>
