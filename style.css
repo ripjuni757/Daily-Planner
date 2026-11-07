@@ -493,3 +493,26 @@
 .google-sync-card .google-sync-checkbox input{margin-top:3px;flex:none}
 .google-last-synced{font:11px Arial,sans-serif;color:#536d81}
 .google-sync-card .action-button,.google-sync-card .text-button{min-height:34px}
+
+
+/* Solenary v11: understated version badge and clear automatic-sync feedback. */
+.brand { gap: 13px; }
+.brand-link { display:flex; align-items:center; gap:13px; min-width:0; color:inherit; text-decoration:none; }
+.brand-link:hover .brand-name { color:#f2deae; }
+.version-label { flex:none; align-self:center; display:inline-flex; align-items:center; justify-content:center; min-height:23px;
+  padding:3px 7px; border:1px solid rgba(203,177,125,.55); color:#dec99f; text-decoration:none;
+  background:rgba(213,185,129,.08); font:600 10px/1 Arial,sans-serif; letter-spacing:.06em; }
+.version-label:hover,.version-label:focus-visible { background:rgba(213,185,129,.20); color:#fff0cc; }
+.google-auto-state { display:flex;align-items:flex-start;gap:11px;padding:10px 12px;margin-top:13px;
+  border:1px solid #d2dfe7;background:#fff;color:#30516b;font:12px/1.5 Arial,sans-serif; }
+.google-auto-state>div { display:grid;gap:2px;min-width:0; }
+.google-auto-state strong { font-weight:700; }
+.google-auto-state span:not(.google-auto-dot) { color:#60758a; }
+.google-auto-dot { flex:none;width:9px;height:9px;border-radius:50%;margin-top:4px;background:#9cabb7; }
+.google-auto-state[data-state="success"] .google-auto-dot { background:#338465; }
+.google-auto-state[data-state="working"] .google-auto-dot { background:#c58b39;animation:solenary-sync-pulse 1s infinite alternate; }
+.google-auto-state[data-state="error"] { border-color:#e6b6bf;background:#fff9fa; }
+.google-auto-state[data-state="error"] .google-auto-dot { background:#b43b48; }
+.google-auto-state[data-state="paused"] .google-auto-dot { background:#8496a8; }
+@keyframes solenary-sync-pulse { from{opacity:.35}to{opacity:1} }
+@media(max-width:600px){.brand{gap:7px}.brand-link{gap:8px}.version-label{padding:3px 5px;font-size:9px}.brand-name{letter-spacing:.09em}}

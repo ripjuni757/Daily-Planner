@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'self'; img-src 'self'; style-src 'self'; form-action 'none'">
+<meta name="theme-color" content="#112943">
+<meta name="description" content="What's new in Solenary, your personal planner.">
+<title>Changelog · Solenary</title>
+<style>
+:root{--navy:#112943;--gold:#d6c299;--text:#1a3148;--line:#dbe2e8;--muted:#62748a}
+*{box-sizing:border-box}body{margin:0;background:#f4f6f8;color:var(--text);font:15px/1.65 Georgia,Cambria,'Times New Roman',serif}
+a{color:inherit}header{background:var(--navy);color:#fff;border-bottom:3px solid var(--gold);padding:18px max(22px,calc((100vw - 980px)/2));display:flex;justify-content:space-between;align-items:center;gap:18px}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;min-width:0}.brand img{width:38px;height:38px}.brand-name{font-size:20px;letter-spacing:.14em;color:var(--gold);line-height:1}.tagline{font:9px Arial,sans-serif;letter-spacing:.18em;color:#cfb98e;margin-top:6px}.back{color:#e9edf2;font-size:13px;white-space:nowrap;text-decoration:none}.back:hover{text-decoration:underline}
+main{max-width:980px;margin:0 auto;padding:45px 24px 80px}.eyebrow{font:700 10px Arial,sans-serif;letter-spacing:.22em;color:#3c6285;text-transform:uppercase}.title{font-size:clamp(34px,6vw,50px);font-weight:normal;margin:6px 0 8px}.lede{color:var(--muted);max-width:650px;margin:0 0 30px}.release{background:#fff;border:1px solid var(--line);padding:24px 28px;margin-bottom:15px}.release-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:12px;border-bottom:1px solid #e8edf1;padding-bottom:12px}.release-head h2{font-size:25px;font-weight:normal;margin:0;color:#173956}.release-head span{font:600 10px Arial,sans-serif;letter-spacing:.10em;color:#6f8191}.latest{color:#326146!important;border:1px solid #a6c1b2;padding:3px 7px}.release p{margin:15px 0 10px;color:#53697e}.release ul{margin:8px 0 0;padding-left:20px}.release li{padding:3px 0}.note{margin-top:27px;color:var(--muted);font-size:12px;line-height:1.7}
+@media(max-width:600px){header{padding:16px 19px}.release{padding:18px 20px}main{padding:30px 17px 60px}}
+</style>
+</head>
+<body>
+<header><a class="brand" href="./" aria-label="Back to Solenary"><img src="solenary-mark.svg" alt=""><div><div class="brand-name">SOLENARY</div><div class="tagline">YOUR DAYS, YOUR RHYTHM.</div></div></a><a class="back" href="./">← Back to planner</a></header>
+<main>
+<div class="eyebrow">PRODUCT UPDATES / RELEASE NOTES</div><h1 class="title">Changelog</h1><p class="lede">A record of improvements to Solenary. Features may require setup in your account before becoming available.</p>
+<section class="release"><div class="release-head"><h2>v.11 — Automatic Calendar Sync</h2><span class="latest">LATEST</span></div><p>Less clicking, more planning.</p><ul>
+<li>Saved Solenary event changes trigger a debounced Google Calendar sync when two-way mode is enabled and an initial sync has completed.</li>
+<li>Checks for Google-side changes every two minutes while Solenary is visible, plus an update after returning to the tab.</li>
+<li>Improved connection, syncing, conflict, and retry status in Integrations.</li>
+<li>Optional Supabase Cron setup for scheduled syncing while the website is closed.</li>
+<li>Clickable version label beside the Solenary name opens this changelog.</li>
+</ul></section>
+<section class="release"><div class="release-head"><h2>v.10 — Google Calendar</h2></div><ul><li>Google account authorization and selectable calendars.</li><li>Two-way event synchronization, with import-only mode as the starting setting.</li><li>Server-side tokens, linked events, and protection against conflicting simultaneous edits.</li></ul></section>
+<section class="release"><div class="release-head"><h2>v.9 — School Planning</h2></div><ul><li>Cannon Upper School’s three-day rotating schedule, block mapping, and personal class setup.</li><li>School selection during signup and in account settings; eligible Upper School students see US Planner.</li></ul></section>
+<section class="release"><div class="release-head"><h2>v.8 — Administration Analytics</h2></div><ul><li>Admin user and feedback reporting, with activity-minute tracking and privacy disclosures.</li></ul></section>
+<section class="release"><div class="release-head"><h2>v.7 — Solenary</h2></div><ul><li>Navy-and-gold Solenary identity and simplified navigation.</li><li>Private administration dashboard and feedback inbox.</li></ul></section>
+<section class="release"><div class="release-head"><h2>Earlier versions</h2></div><ul><li>Daily Compass, Reality Check, Deadline Runway, Rebuild Week, and weekly reflection.</li><li>Recurring weekly activities, personal work/school hours, and differentiated calendar colors.</li><li>Supabase accounts, personal cloud saving, and shared spaces.</li></ul></section>
+<p class="note">Solenary is an independently developed planner. Some integrations are experimental and may not be enabled for all users. If you notice a syncing issue, keep a backup of your calendar and report the issue through Solenary's feedback form.</p>
+</main>
+</body></html>

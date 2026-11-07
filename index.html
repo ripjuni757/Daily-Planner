@@ -8,17 +8,20 @@
   <meta name="theme-color" content="#112943">
   <meta name="description" content="Solenary — your days, your rhythm. A thoughtful personal planner.">
   <title>Solenary — Your days, your rhythm.</title>
-  <link rel="stylesheet" href="style.css?v=10">
+  <link rel="stylesheet" href="style.css?v=11">
   <link rel="stylesheet" href="analytics.css">
 </head>
 <body>
 <div id="bootScreen" class="boot-screen" role="status">Opening Solenary…</div>
 <div class="app" id="plannerApp" hidden>
   <header class="topbar">
-    <a class="brand" href="./" aria-label="Solenary planner home">
-      <img class="brand-logo" src="solenary-mark.svg" alt="" aria-hidden="true">
-      <div><div class="brand-name">SOLENARY</div><div class="brand-subtitle">YOUR DAYS, YOUR RHYTHM.</div></div>
-    </a>
+    <div class="brand">
+      <a class="brand-link" href="./" aria-label="Solenary planner home">
+        <img class="brand-logo" src="solenary-mark.svg" alt="" aria-hidden="true">
+        <div><div class="brand-name">SOLENARY</div><div class="brand-subtitle">YOUR DAYS, YOUR RHYTHM.</div></div>
+      </a>
+      <a class="version-label" href="changelog.html" aria-label="Solenary version 11 — view changelog" title="What's new in Solenary v11">v.11</a>
+    </div>
     <div class="header-actions">
       <button type="button" class="header-button mobile-sidebar-toggle" id="sidebarToggle">Overview</button>
       <button type="button" class="header-button" id="searchOpen" title="Search tasks (press /)">⌕ &nbsp; Search</button>
@@ -326,10 +329,14 @@
           <button class="action-button" type="button" id="googleSyncNow">Sync now</button>
           <button class="text-button border-button" type="button" id="googleDisconnect">Disconnect</button>
         </div>
+        <div class="google-auto-state" id="googleAutoState" aria-live="polite" role="status">
+          <span class="google-auto-dot" id="googleAutoDot" aria-hidden="true"></span>
+          <div><strong id="googleAutoHeading">Automatic sync</strong><span id="googleAutoText">Checking your connection…</span></div>
+        </div>
         <p id="googleLastSync" class="google-last-synced">Last successful sync: Never</p>
         <p id="googleSyncResults" class="helper" role="status"></p>
       </div>
-      <p class="helper">Syncs events from 30 days ago through 365 days ahead. Multi-day and overnight events are left untouched in Google for now. Automatically checks while Solenary is open; optional server scheduling enables updates when closed. Google Tasks are separate from Calendar events.</p>
+      <p class="helper">Syncs events from 30 days ago through 365 days ahead. Multi-day and overnight events are left untouched in Google for now. Checks for Google changes every 2 minutes while the page is open, and sends saved Solenary changes automatically when two-way mode is on. Background updates when closed require Supabase Cron setup. Google Tasks are separate from Calendar events.</p>
     </section>
     <div class="integration-section"><div class="modal-subhead">ONE-TIME CALENDAR HANDOFFS <span>Choose one of your personal tasks</span></div>
       <label class="form-field"><span>Task to add to an external calendar</span><select id="integrationTask"></select></label>
@@ -378,9 +385,9 @@
 <script src="supabase-config.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0"></script>
 <script src="supabase-client.js"></script>
-<script src="app.js?v=10"></script>
+<script src="app.js?v=11"></script>
 <script src="connect.js?v=10"></script>
-<script src="google-sync.js?v=10"></script>
+<script src="google-sync.js?v=11"></script>
 <script src="feedback.js"></script>
 <script src="usage.js"></script>
 </body>

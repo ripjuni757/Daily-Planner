@@ -121,6 +121,10 @@
       const { error } = await client.from('daymark_tasks').upsert(rows, {onConflict:'user_id,task_id'});
       if (error) throw new Error(error.message);
     }
+    // v11: a durable cloud write has finished. The integration decides whether
+    // Google writeback is enabled and debounces multiple saves into one sync.
+    if (items.length) window.dispatchEvent(new CustomEvent('solenary:tasks-changed',
+      {detail:{action:'upsert',count:items.length}}));
   }
   async function cloudDelete(ids) {
     for (let i = 0; i < ids.length; i += 150) {
@@ -128,6 +132,8 @@
         .eq('user_id', userId).in('task_id', ids.slice(i,i+150));
       if (error) throw new Error(error.message);
     }
+    if (ids.length) window.dispatchEvent(new CustomEvent('solenary:tasks-changed',
+      {detail:{action:'delete',count:ids.length}}));
   }
   async function reloadCloud() {
     tasks = await fetchCloudTasks();
@@ -948,7 +954,7 @@
   $('taskKind').addEventListener('change',()=>{const old=tasks.find(t=>t.id===editingId);if(old?.seriesId)$('taskDate').value=$('taskKind').value==='weekly'?(seriesItems(old.seriesId)[0]?.date||old.date):old.date;if($('taskKind').value==='reminder'&&$('taskReminder').value==='none')$('taskReminder').value='15';toggleTimeInputs();renderRepeatWeeks();});
   $('deleteTask').addEventListener('click',async()=>{
     if(!editingId)return;
-    if(!confirm('Delete this task or reminder?'))return;
+    if(!confirm('Delete this task or reminder? If it is linked to Google Calendar and two-way sync is enabled, the Google event may also be removed automatically.'))return;
     $('deleteTask').disabled=true;
     try { await cloudDelete([editingId]);tasks=tasks.filter(t=>t.id!==editingId);closeDialog('taskDialog');render();notify('Item deleted.'); }
     catch(err){notify(`Could not delete: ${err.message}`);}
@@ -957,7 +963,7 @@
   $('deleteSeries').addEventListener('click',async()=>{
     if(!editingSeries)return;
     const occurrences=seriesItems(editingSeries);
-    if(!confirm(`Delete all ${occurrences.length} dates in this recurring series?`))return;
+    if(!confirm(`Delete all ${occurrences.length} dates in this recurring series? Linked Google Calendar events may also be removed when two-way sync is enabled.`))return;
     $('deleteSeries').disabled=true;
     try{await cloudDelete(occurrences.map(t=>t.id));tasks=tasks.filter(t=>t.seriesId!==editingSeries);closeDialog('taskDialog');render();notify('Recurring series deleted.');}
     catch(e){await reloadCloud().catch(()=>{});notify(`Could not delete series: ${e.message}`);}
@@ -1021,12 +1027,13 @@
   ['settingWeekStart','settingTimeFormat','settingDuration'].forEach(id=>$(id).addEventListener('change',settingsChanged));
   $('settingNotifications').addEventListener('change',notificationsChanged);
   $('clearDataButton').addEventListener('click',async()=>{
-    if(!confirm(`Permanently delete all ${tasks.length} tasks and reminders from your account on every device? Download a backup first.`))return;
+    if(!confirm(`Permanently delete all ${tasks.length} tasks and reminders from your account? If Google two-way sync is enabled, linked Google Calendar events may also be deleted on the next sync. Download backups of both calendars first.`))return;
     $('clearDataButton').disabled=true;
     try {
       const {error}=await client.from('daymark_tasks').delete().eq('user_id',userId);
       if(error)throw new Error(error.message);
       tasks=[];compass={...defaultCompass};closeDialog('settingsDialog');render();notify('All account tasks and planning goals deleted.');
+      window.dispatchEvent(new CustomEvent('solenary:tasks-changed',{detail:{action:'clear',count:0}}));
     } catch(err){notify(`Could not clear your planner: ${err.message}`);}
     finally{$('clearDataButton').disabled=false;}
   });
